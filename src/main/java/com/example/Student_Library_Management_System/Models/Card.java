@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "Card")
+@Table(name = "card")
 public class Card
 {
 
@@ -31,7 +33,15 @@ public class Card
     @JoinColumn
     private Student student;       //This variable is used in the parent class while doing the bidirectional mapping
 
-    public Card() {
+    // Card book mapping
+    //Card is parent wrt to Book
+    @OneToMany(mappedBy = "card" , cascade = CascadeType.ALL)
+    List<Book> booksIssued;
+
+    public Card()
+    {
+        booksIssued = new ArrayList<>();   // Initialize to prevent Null(Default value) pointer exception
+        // But in beans spring automatically initialize it
     }
 
     //Plan is to save this card in Db.
@@ -75,5 +85,13 @@ public class Card
 
     public void setStudent(Student student) {
         this.student = student;
+    }
+
+    public List<Book> getBooksIssued() {
+        return booksIssued;
+    }
+
+    public void setBooksIssued(List<Book> booksIssued) {
+        this.booksIssued = booksIssued;
     }
 }
