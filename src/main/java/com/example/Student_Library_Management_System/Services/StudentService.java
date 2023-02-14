@@ -44,4 +44,27 @@ public class StudentService
 
         return "Student and Card added";
     }
+
+    public String getNameByEmail(String email)
+    {
+        Student student = studentRepository.findNameByEmail(email);
+        return student.getName();
+    }
+
+    public String updateMobileNumber(Student newStudent)
+    {
+        // we are passing id and newMobileNumber in newStudent body
+        // Since .save function will update the passed parameters and set all remaining parameters as null or default
+        // Now to prevent this kind of data loss
+        // First fetch old data(Original data)
+        Student originalStudent = studentRepository.findById(newStudent.getId()).get();
+
+        // We will keep all the properties as it is and only change required parameters
+        originalStudent.setMobileNo(newStudent.getMobileNo());
+
+        // Now save student object with all parameters
+        studentRepository.save(originalStudent);
+
+        return "Student's mobile number has been updated successfully..";
+    }
 }
