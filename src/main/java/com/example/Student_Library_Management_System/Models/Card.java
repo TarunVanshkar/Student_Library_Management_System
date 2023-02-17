@@ -38,6 +38,14 @@ public class Card
     @OneToMany(mappedBy = "card" , cascade = CascadeType.ALL)
     List<Book> booksIssued;
 
+
+    // Bidirectional Mapping for Transaction Model
+    //Connecting the card class to the transaction
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL)
+    private List<Transactions> transactionsLst = new ArrayList<>();
+
+
+
     public Card()
     {
         booksIssued = new ArrayList<>();   // Initialize to prevent Null(Default value) pointer exception
@@ -93,5 +101,14 @@ public class Card
 
     public void setBooksIssued(List<Book> booksIssued) {
         this.booksIssued = booksIssued;
+    }
+
+
+    public List<Transactions> getTransactionsLst() {
+        return transactionsLst;
+    }
+
+    public void setTransactionsLst(List<Transactions> transactionsLst) {
+        this.transactionsLst = transactionsLst;
     }
 }

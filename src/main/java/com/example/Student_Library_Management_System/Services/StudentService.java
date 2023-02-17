@@ -1,5 +1,6 @@
 package com.example.Student_Library_Management_System.Services;
 
+import com.example.Student_Library_Management_System.DTOs.StudentUpdateMobileRequestDto;
 import com.example.Student_Library_Management_System.Enums.CardStatus;
 import com.example.Student_Library_Management_System.Models.Card;
 import com.example.Student_Library_Management_System.Models.Student;
@@ -51,16 +52,33 @@ public class StudentService
         return student.getName();
     }
 
-    public String updateMobileNumber(Student newStudent)
+//    public String updateMobileNumber(Student newStudent)
+//    {
+//        // we are passing id and newMobileNumber in newStudent body
+//        // Since .save function will update the passed parameters and set all remaining parameters as null or default
+//        // Now to prevent this kind of data loss
+//        // First fetch old data(Original data)
+//        Student originalStudent = studentRepository.findById(newStudent.getId()).get();
+//
+//        // We will keep all the properties as it is and only change required parameters
+//        originalStudent.setMobileNo(newStudent.getMobileNo());
+//
+//        // Now save student object with all parameters
+//        studentRepository.save(originalStudent);
+//
+//        return "Student's mobile number has been updated successfully..";
+//    }
+
+
+    public String updateMobileNumber(StudentUpdateMobileRequestDto studentUpdateMobileRequestDto)
     {
-        // we are passing id and newMobileNumber in newStudent body
-        // Since .save function will update the passed parameters and set all remaining parameters as null or default
-        // Now to prevent this kind of data loss
+        //CONVERT THE DTO TO ENTITY : saved better
+
         // First fetch old data(Original data)
-        Student originalStudent = studentRepository.findById(newStudent.getId()).get();
+        Student originalStudent = studentRepository.findById(studentUpdateMobileRequestDto.getId()).get();
 
         // We will keep all the properties as it is and only change required parameters
-        originalStudent.setMobileNo(newStudent.getMobileNo());
+        originalStudent.setMobileNo(studentUpdateMobileRequestDto.getMobileNo());
 
         // Now save student object with all parameters
         studentRepository.save(originalStudent);

@@ -1,6 +1,7 @@
 package com.example.Student_Library_Management_System.Services;
 
 
+import com.example.Student_Library_Management_System.DTOs.BookRequestDto;
 import com.example.Student_Library_Management_System.Models.Author;
 import com.example.Student_Library_Management_System.Models.Book;
 import com.example.Student_Library_Management_System.Repositories.AuthorRepository;
@@ -18,23 +19,65 @@ public class BookService
     AuthorRepository authorRepository;    // to fetch author entity in bookService
 
 
-    public String addBook(Book book)
+//    public String addBook(Book book)
+//    {
+//        //I want to get the AuthorEntity ???
+//        int authorId = book.getAuthor().getId();
+//
+////        try
+////        {
+//            Author author = authorRepository.findById(authorId).get();
+//            // .get() method throw NoSuchElementException
+////        }
+////        catch(NoSuchElementException e)
+////        {
+////            return "Author is not present in Database";
+////        }
+//
+//        //Basic attributes are already set from postman
+//
+//        //Setting the foreign key attr in the child class :
+//        book.setAuthor(author);
+//
+//        //We need to also update the listOfBooks written in the parent class
+//        List<Book> currentBooksWritten = author.getBooksWritten();
+//        currentBooksWritten.add(book);
+//
+//        //Now the book is to be saved, but also author is alsoooo to be saved.
+//
+//        //Why do we need to again save (updating) the author ?? bcz
+//        //bcz the author Entity has been updated....we need to resave/update it.
+//        authorRepository.save(author);   //Data was modified
+//
+//        //.save function works both as save function and as update function
+//
+//
+//        //bookRepo.save is not required : bcz it will be autocalled by cascading
+//        //effect   otherwise duplicate books will be saved
+//
+//        return "Book Added successfully";
+//    }
+
+
+    public String addBook(BookRequestDto bookRequestDto)
     {
         //I want to get the AuthorEntity ???
-        int authorId = book.getAuthor().getId();
+        int authorId = bookRequestDto.getAuthorId();
 
-//        try
-//        {
-            Author author = authorRepository.findById(authorId).get();
-            // .get() method throw NoSuchElementException
-//        }
-//        catch(NoSuchElementException e)
-//        {
-//            return "Author is not present in Database";
-//        }
+        //Now I will be fetching the authorEntity
+        Author author = authorRepository.findById(authorId).get();
+        // .get() method throw NoSuchElementException
 
-        //Basic attributes are already set from postman
+        //Convertor
+        //We have created this Entity so that we can save it into the DB.
+        Book book = new Book();
 
+        //Basic attributes are being from Dto to the Entity Layer
+        book.setGenre(bookRequestDto.getGenre());
+        book.setName(bookRequestDto.getName());
+        book.setPages(bookRequestDto.getPages());
+        book.setIssued(false);
+        
         //Setting the foreign key attr in the child class :
         book.setAuthor(author);
 
